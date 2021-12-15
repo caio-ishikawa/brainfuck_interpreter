@@ -27,13 +27,14 @@ fn main() {
     compile(parsed_code);
 }
 
-// Reads file and returns list of commands //
+// Reads file and returns list of chars containing the brainfuck commands //
 fn lexer(file_name: &String) -> Vec<char> {
     let input = fs::read_to_string(file_name).expect("Error reading file");
     let code_vector: Vec<char> = input.chars().filter(|&n| n == '>' || n == '<' || n == '+' || n == '-' || n == '[' || n == ']' || n == '.' || n == ',').collect();
     return code_vector;
 }
 
+// Turns list of brainfuck commands into a vector of type Operations //
 fn parse(brain_code: Vec<char>) -> Vec<Operations> { 
     let mut code: Vec<Operations> = Vec::new();
 
@@ -51,10 +52,10 @@ fn parse(brain_code: Vec<char>) -> Vec<Operations> {
         };
         code.push(operation);
     }
-
     return code;
 }
 
+// Runs code and prints the memory tape for debugging purposes || WILL CHANGE LATER //
 fn compile(code: Vec<Operations>) {
     let mut memory: Vec<u8> = vec![0; 1000];
     let mut mem_ptr = 0;
