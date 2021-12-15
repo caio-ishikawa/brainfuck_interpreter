@@ -1,0 +1,10 @@
+Yo! Inspirei-me pelo brainfuck interpreter e estou a tentar fazer o mesmo (por enquanto, o foco e meter isso a funcionar, e depois vejo a performance), mas estou a ter dificuldades com os loops. Nao estou a contar com nested loops, so para diminuir a complexidade por enquanto.
+
+Quando o meu loop passa por um "[", ele muda o "bracket_idx" para o pointer location. Agora o que eu quero que aconteca e que quando o loop passe por um "]", e o valor do memory[pointer] nao for um 0, que o pointer faca reset para o bracket_idx, mas quando o meu inut e ">>++[-]", o meu output fica:
+
+'''
+[0, 0, 1, 0, 0, 0, 0, 0, 0, 0]
+'''
+
+quando deveria ser somente 0s (unless I misunderstood brainfuck).
+
