@@ -1,7 +1,5 @@
-use std::str;
 use std::env;
 use std::fs;
-use std::num::Wrapping;
 
 #[derive(Debug)]
 #[derive(Clone)]
@@ -21,7 +19,6 @@ fn main() {
     let cli_args: Vec<String> = env::args().collect();
     let file_name = &cli_args[1];
     let code = lexer(file_name);
-    println!("{:?}", code);
 
     let parsed_code = parse(code);
     compile(parsed_code);
@@ -61,7 +58,7 @@ fn compile(code: Vec<Operations>) {
     let mut mem_ptr = 0;
     let mut code_ptr = 0;
     let mut bracket_idx: Vec<usize> = Vec::new();
-    println!("{:?}", code);
+    let mut output: Vec<u8> = Vec::new();
 
     while code_ptr < code.len() { 
         let command = code[code_ptr]; 
@@ -71,7 +68,7 @@ fn compile(code: Vec<Operations>) {
             Operations::DecrementByte => memory[mem_ptr] = memory[mem_ptr].wrapping_sub(1),
             Operations::IncrementPtr => mem_ptr += 1,
             Operations::DecrementPtr => mem_ptr -= 1, 
-            Operations::Read => log_ptr(&[memory[mem_ptr] as u8]), 
+            Operations::Read => output.push(memory[mem_ptr]),   
             Operations::StartLoop => bracket_idx.push(code_ptr), 
             Operations::EndLoop => { 
                 if memory[mem_ptr] != 0 {
@@ -85,10 +82,12 @@ fn compile(code: Vec<Operations>) {
         };
         code_ptr += 1;
     }
-    println!("{:?}", memory);
+    //println!("{:?}", memory);
+    log_ptr(output);
 }
 
-fn log_ptr(byte: &[u8]) { 
-    let character = str::from_utf8(byte).unwrap();
-    println!("{}", &character);
+fn log_ptr(byte: Vec<u8>) { 
+    let int_as_char: Vec<char> = byte.iter().map(|&n| n as char).collect();
+    let output_as_str: String = int_as_char.into_iter().collect();
+    println!("OUTPUT: {:?}", output_as_str);
 }
